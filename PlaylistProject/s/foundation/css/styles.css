@@ -1,0 +1,137 @@
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000;
+}
+/* flip the pane when hovered */
+.flip-container:hover .flipper, .flip-container.hover .flipper {
+    transform: rotateY(180deg);
+}
+
+.flip-container, .front, .back {
+	width: 320px;
+	height: 480px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+    width: 349px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
+
+.genre {
+        color: #A8D2E0;
+        font-size: .8rem;
+        font-weight: bold;
+        display: block;
+        text-transform: capitalize;
+        margin-bottom: 0;
+        padding-bottom: .5rem;
+}
+
+
+#attribution { display: inline;
+               float: right;}
+
+iframe { width: 350px;
+         height: auto;
+         }
+
+body {
+    margin: 2%;
+    background-color: #283741;
+}
+
+h4#headline {
+    color: #F0F0F0;
+    padding-bottom: 2rem;
+}
+
+h5.showName { color: #58BCFF;
+              font-size: 1rem;
+              width: 75%;
+            }
+
+article { padding-bottom: 3rem;
+          margin-left: 10%; }
+
+.artist-image {
+               height: auto;
+               max-height: 100%
+               margin: 0 auto;
+               }
+
+div.artist-image { height: 100%;
+                width: 100%; }
+
+
+.bio { font-size: .8rem;
+       z-index: 100;
+       position: absolute;
+       color: rgb(197, 229, 233);
+       text-align: center;
+       padding: 5%;
+       line-height: 1.5;
+       margin: auto;
+}
+
+.bio a {
+    font-size: .5rem;
+    text-decoration: none;
+    font-weight: bold;
+    }
+
+.info {
+    height: 200px;
+    width: 350px;
+    position: relative;
+    /* background: linear-gradient(#788A96, #455965); */
+    margin: 0;
+}
+
+/* .info:hover span { visibility: visible;
+                    background-color: rgba(255,0,0,0.5); } */
+
+/* .info:hover img { -webkit-filter: brightness(0.5); } */
+
+
+p.no-image {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10%;
+    color: rgb(105, 98, 98);
+    }
+
+.tile {
+    width: 500px;
+    display: inline-block;
+     }
+
+.album-style { box-shadow: 0 0 2rem black;
+                  height: 349px;
+                  width: 349px;
+                }
+
+a:hover { color: white; }

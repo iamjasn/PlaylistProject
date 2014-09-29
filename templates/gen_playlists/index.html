@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+    <head>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'foundation/css/normalize.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'foundation/css/foundation.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'foundation/css/styles.css' %}" />
+        <script src="{% static 'foundation/js/scripts.js' %}"></script>
+
+        <meta charset="utf-8">
+        <title>Generate Playlists</title>
+        <meta name="description" content="">
+	    <meta name="author" content="">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+        <!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+    </head>
+
+    <body>
+    <img id="attribution" src="{% static 'foundation/img/sk_attribution.jpg' %}" alt="Concerts by Songkick" />
+    <h4 id="headline">Upcoming shows in the {{profile.city}} area: </h4>
+    <section class="five columns">
+    {% if shows %}
+        {% for show in shows %}
+            {% if show.track %}
+                <article class="tile">
+                    <h5 class="showName"><a href="{{ show.event_uri }}" target="_blank">{{ show.sk_display_name }}</a></h5>
+                    <p class="genre">{{ show.genre }}</p>
+                    <div class="album-style flip-container" ontouchstart="this.classList.toggle('hover');">
+                    <div class="info flipper">
+                    {% if show.image %}
+                    <div class="artist-image front"
+                         style="background-image: url('{{ show.image }}'); background-repeat: no-repeat; background-size: cover; background-position: 0px 0px center;"  >
+                    {% else %}
+                    <div class="artist-image front">
+                        <p class="no-image"><em>{{ show.artist }}</em></p>
+                    {% endif %}
+                    </div>
+                    <div class="back">
+                    {% if show.bio %}<span class="bio">{{ show.bio }} {% if show.bio_link %} <a
+                            href="{{ show.bio_link }}" target="_blank">(source)</a></span> {% endif %} {% endif %}
+                    </div>
+                    </div>
+                    <iframe width=\"350\" height=\"80\" src={{ show.track }}/?source=oembed&maxheight=200&maxwidth=350\" frameborder=\"0\"></iframe>
+                    </div>
+                </article>
+        {% endif %}
+        {% endfor %}
+    {% else %}
+        <h4>No information available.</h4>
+    {% endif %}
+        </section>
+    </body>
+
+</html>
