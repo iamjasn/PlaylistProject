@@ -110,20 +110,6 @@ def convert_to_array(upcoming_shows):
     return shows_list
 
 
-# def get_bio(upcoming_shows):
-#     for show in upcoming_shows:
-#         endpoint = 'http://developer.echonest.com/api/v4/artist/biographies?api_key=59QM9FSJQ2HBN8N7P&id=rdio:artist' \
-#                    ':' + show.artist_id + '&format=json&results=1&start=0&license=cc-by-sa'
-#         results = urlopen(endpoint)
-#         raw = results.read()
-#         response = json.loads(raw)
-#         if response['response']['status']['biographies']:
-#             bio = response['response']['status']['biographies']['text']
-#             show.bio = truncate(bio, 300)
-
-# get_upcoming_shows(songkick_api)
-
-
 # def display_upcoming_shows(upcoming_shows_list):
 #     for show in upcoming_shows:
 #         print "%s %s %s %s" % (show.artist, show.venue, show.city, show.when)
