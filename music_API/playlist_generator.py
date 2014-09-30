@@ -8,9 +8,6 @@ from api_keys import songkick_api, rdio, echo_nest_api_start, echo_nest_api_end
 Songkick and Rdio."""
 
 
-user_country = 'US'
-
-
 
 # def truncate_to_300(text):
 #     if len(text) <= 300:
