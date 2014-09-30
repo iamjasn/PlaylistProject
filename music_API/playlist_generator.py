@@ -11,17 +11,6 @@ Songkick and Rdio."""
 user_country = 'US'
 
 
-class Profile(object):
-    def __init__(self):
-        self.get_city()
-    def get_city(self):
-        results = urlopen('http://freegeoip.net/json/')
-        raw = results.read()
-        response = json.loads(raw)
-        if response:
-            self.city = response['city']
-        else:
-            self.city = None
 
 # def truncate_to_300(text):
 #     if len(text) <= 300:
