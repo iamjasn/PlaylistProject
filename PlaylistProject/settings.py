@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gen_playlists',
+    'djangular',
 )
 
 MIDDLEWARE_CLASSES = (
