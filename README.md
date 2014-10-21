@@ -1,4 +1,4 @@
-playlists-page
+PlaylistProject
 ==============
 
 class project using songkick, rdio, and echo nest APIs
