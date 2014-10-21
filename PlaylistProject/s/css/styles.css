@@ -10,6 +10,10 @@ html {
 
 body { font-family: 'Arimo', "Helvetica Neue", "Helvetica", "Arial", sans-serif}
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+    }
+
 section.container {
     width: 1800px;
     margin: auto;

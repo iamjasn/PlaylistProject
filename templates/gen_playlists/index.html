@@ -4,62 +4,104 @@
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-    <head>
-        {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
-        <!--<script src="{% static 'js/vendor/jquery.js' %}"></script>-->
-        <script src="{% static 'js/scripts.js' %}"></script>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
 
+    <meta charset="utf-8">
+    <title>Preview Upcoming Concerts</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--<script src="{% static 'js/scripts.js' %}"></script>-->
+</head>
 
-        <meta charset="utf-8">
-        <title>Generate Playlists</title>
-        <meta name="description" content="">
-	    <meta name="author" content="">
+<body>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-        <!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-    </head>
-
-    <body>
-    <!--- {{ from_cache }} --->
     <img id="attribution" src="{% static 'img/sk_attribution.jpg' %}" alt="Concerts by Songkick" />
-    <h4 id="headline">Upcoming shows in the {{ city }} area: </h4>
-    <section class="container">
-    {% if shows %}
-        {% for show in shows %}
-            {% if show.track %}
-                <article class="tile">
-                    <h5 class="showName"><a href="{{ show.event_uri }}" target="_blank">{{ show.sk_display_name }}</a></h5>
-                    <p class="genre">{{ show.genre }}</p>
+    <h4 id="headline">Upcoming shows in the {{ city }} area</h4>
+    <section class="container" ng-app="showsApp" ng-controller="showsCtrl">
+        {% verbatim %}
+                <article ng-show='show.track' class="tile" ng-repeat="show in shows" ng-cloak>
+                    <h5 class="showName"><a href="{{show.uri}}" target="_blank">{{show.display_name}}</a></h5>
+                    <p class="genre">{{show.genre}}</p>
                     <div class="album-style flip-container" ontouchstart="this.classList.toggle('hover');">
                     <div class="info flipper">
-                    {% if show.image %}
-                    <div class="artist-image front"
-                         style="background-image: url('{{ show.image }}'); background-repeat: no-repeat; background-size: cover; background-position: 0px 0px center;"  >
-                    {% else %}
-                    <div class="artist-image front">
-                        <p class="no-image"><em>{{ show.artist }}</em></p>
-                    {% endif %}
+                    <div ng-hide=!'show.image' class="artist-image front" style="background-image: url('{{show.image}}');
+                     background-repeat: no-repeat; background-size: cover; background-position: 0px 0px center;"  >
+                        <p class="no-image" ng-hide='show.image'><em>{{show.artist}}</em></p>
                     </div>
                     <div class="back">
-                    {% if show.bio %}<span class="bio">{{ show.bio }} {% if show.bio_link %} <a
-                            href="{{ show.bio_link }}" target="_blank">(source)</a></span> {% endif %} {% endif %}
+                    <span class="bio" ng-show='show.bio'>{{show
+                        .bio}}<a href="{{show.bio_link}}" target="_blank" ng-hide=!'show.bio_link'> (source)</a></span>
                     </div>
                     </div>
-                    <iframe width=\"350\" height=\"80\" src={{ show.track }}/?source=oembed&maxheight=200&maxwidth=350\" frameborder=\"0\"></iframe>
+                    <iframe width=\"360\" height=\"80\"
+                            src="{{show.track}}/?source=oembed&maxheight=200&maxwidth=360\" frameborder=\"0\"></iframe>
                     </div>
                 </article>
-        {% endif %}
-        {% endfor %}
-    {% else %}
-        <h4>No information available.</h4>
-    {% endif %}
-        </section>
-    </body>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.js"></script>
+        {% endverbatim %}
+    </section>
 
+
+<script>
+var showsApp = angular.module("showsApp", []);
+
+function showsCtrl($scope, $http) {
+    $http.get('./data').
+        success(function (data, status, headers, config) {
+            $scope.shows = data;
+        }).
+        error(function (data, status, headers, config) {
+        });
+}</script>
+
+
+    <!--<script>-->
+
+        <!--var request = new XMLHttpRequest();-->
+
+        <!--function drawShows(data) {-->
+            <!--console.log(data);-->
+            <!--console.log(data[0]['artist']);-->
+            <!--for (var i = 0; i < data.length; i++) {-->
+                <!--document.body.innerHTML = '<article class="tile"> <h5 class="showName"> ' +-->
+                        <!--'<a href="' + (data[i].uri) + '" target="_blank">' + (data[i].display_name) +-->
+                        <!--'</a></h5><p class=genre">' + (data[i].genre) +-->
+                        <!--'</p> <div class="album-style flip-container" ontouchstart="this.classList.toggle(\'hover\');"><div class="info flipper">';-->
+                            <!--if (data[i].image != "") {-->
+                                 <!--document.body.innerHTML =-->
+                                         <!--'div class="artist-image fro nt" style="background-image: url(\'' +-->
+                                         <!--(data[i].image) + '\'); background-repeat: no-repeat; background-size: cover; background-position: 0px 0px center;"'-->
+                            <!--} else {-->
+                                 <!--document.body.innerHTML =-->
+                                         <!--'<div class="artist-image front"> <p class="no-image"><em>'-->
+                                         <!--+ (data[i].artist) + '</em></p>'-->
+                            <!--}-->
+                <!--+ document.body.innerHTML;-->
+                <!--}-->
+        <!--}-->
+
+        <!--function onRequestChange() {-->
+            <!--console.log(request.readyState, request.status);-->
+            <!--if ((request.readyState == 4) && (request.status == 200)) {-->
+                <!--var data = JSON.parse(request.responseText);-->
+                <!--drawShows(data);-->
+            <!--}-->
+        <!--}-->
+
+        <!--function fetchShows() {-->
+            <!--request.onreadystatechange = onRequestChange;-->
+            <!--request.open("GET", "./data", true);-->
+            <!--request.send();-->
+        <!--}-->
+
+        <!--fetchShows();-->
+
+    <!--</script>-->
+
+    </body>
 </html>

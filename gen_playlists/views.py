@@ -10,20 +10,24 @@ from django.shortcuts import render_to_response
 from music_API.playlist_generator import get_tracks, get_upcoming_shows, convert_to_array, get_city
 import pickle
 import base64
+from django.views.decorators.csrf import csrf_exempt
+
 
 def get_shows(city):
-
     try:
         shows_today = Playlist.objects.get(date_generated=date.today(), metro_area__iexact=city)
+    # if shows_today is not None:
         # look for an existing record for today
         decoded_shows = base64.b64decode(shows_today.show_objects)
         shows = pickle.loads(decoded_shows)
+        # from_cache = True
 
     except Playlist.DoesNotExist:
+    # else:
         # if nothing for today in this location:
         shows_today = get_upcoming_shows()
         shows = get_tracks(shows_today)
-        shows = convert_to_array(shows)
+        shows = convert_to_list(shows)
         pickled_shows = pickle.dumps(shows)
         encoded_shows = base64.b64encode(pickled_shows)
         Playlist.objects.create(date_generated=date.today(), metro_area=city,

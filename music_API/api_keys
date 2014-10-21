@@ -1,0 +1,5 @@
+rdio = Rdio(('6ehchkewzbybyt7khhzj3mw9', '6BsEvjwaaw'))
+songkick_api = 'http://api.songkick.com/api/3.0/events.json?apikey=9sd9UQeO4yklPews&location=clientip&page=1'
+echo_nest_api_start = 'http://developer.echonest.com/api/v4/artist/profile?api_key=59QM9FSJQ2HBN8N7P&id=songkick' \
+                      ':artist:'
+echo_nest_api_end = '&bucket=id:rdio-US&bucket=biographies&bucket=images&bucket=genre&format=json'
