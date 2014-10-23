@@ -1,31 +1,31 @@
 from django.shortcuts import render
 from django import http
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.utils import timezone
 import json
 from datetime import date
-from gen_playlists.models import Playlist
+from concert_preview.models import Playlist
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from music_API.playlist_generator import get_tracks, get_upcoming_shows, convert_to_array, get_city
+from music_API.playlist_generator import get_tracks, get_upcoming_shows, convert_to_list, get_city
 import pickle
 import base64
 from django.views.decorators.csrf import csrf_exempt
+from api_keys import songkick_API
 
 
-def get_shows(city):
+
+def get_shows(city, client_ip):
     try:
         shows_today = Playlist.objects.get(date_generated=date.today(), metro_area__iexact=city)
-    # if shows_today is not None:
         # look for an existing record for today
         decoded_shows = base64.b64decode(shows_today.show_objects)
         shows = pickle.loads(decoded_shows)
         # from_cache = True
-
     except Playlist.DoesNotExist:
-    # else:
         # if nothing for today in this location:
-        shows_today = get_upcoming_shows()
+        songkick_endpoint = 'http://api.songkick.com/api/3.0/events.json?apikey=%s&location=ip:%s&page=1' % str(songkick_API), str(client_ip)
+        shows_today = get_upcoming_shows(songkick_endpoint)
         shows = get_tracks(shows_today)
         shows = convert_to_list(shows)
         pickled_shows = pickle.dumps(shows)
@@ -35,16 +35,17 @@ def get_shows(city):
     return shows
 
 def index(request):
+    client_ip = request.META['REMOTE_ADDR']
     context = RequestContext(request)
-    city = get_city()
-    shows = get_shows(city)
-
+    city = get_city(client_ip)
+    shows = get_shows(city, client_ip)
     context_dict = { 'shows': shows, 'city': city }
-    return render_to_response('gen_playlists/index.html', context_dict, context)
+    return render_to_response('concert_preview/index.html', context_dict, context)
 
 def data(request):
-    city = get_city()
-    shows = get_shows(city)
+    client_ip = request.META['REMOTE_ADDR']
+    city = get_city(client_ip)
+    shows = get_shows(city, client_ip)
     show_list = []
     for show in shows:
         item = {}
@@ -59,11 +60,3 @@ def data(request):
         show_list.append(item)
     json_data = json.dumps(show_list)
     return http.HttpResponse(json_data, content_type='text/json')
-
-def home(request):
-    context = RequestContext(request)
-    city = get_city()
-    shows = get_shows(city)
-
-    context_dict = { 'shows': shows, 'city': city }
-    return render_to_response('gen_playlists/home.html', context_dict, context)
