@@ -17,7 +17,7 @@ from api_keys import songkick_API
 
 def get_shows(city, client_ip):
     try:
-        shows_today = Playlist.objects.get(date_generated=date.today(), metro_area__iexact=city)
+        shows_today = Playlist.objects.filter(date_generated=date.today(), metro_area__iexact=city)[0]
         # look for an existing record for today
         decoded_shows = base64.b64decode(shows_today.show_objects)
         shows = pickle.loads(decoded_shows)
