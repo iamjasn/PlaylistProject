@@ -32,7 +32,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['http://54.68.84.121/','localhost']
+ALLOWED_HOSTS = ['http://54.68.84.121','localhost']
 
 
 # Application definition
