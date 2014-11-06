@@ -44,8 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gen_playlists',
-    'djangular',
+    'concert_preview',
 )
 
 MIDDLEWARE_CLASSES = (
