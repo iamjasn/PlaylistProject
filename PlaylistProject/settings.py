@@ -28,11 +28,11 @@ TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 SECRET_KEY = 'f6k$zhp#47(*@z(owf^nr24&)r5tj&l0t(&)cuf7p((k*dqd=6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://54.68.84.121/','localhost']
 
 
 # Application definition
