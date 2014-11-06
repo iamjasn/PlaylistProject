@@ -76,7 +76,7 @@ DATABASES = {
         'HOST': '/Applications/djangostack/postgresql',
         'PORT': '5432',
         'USER': 'bitnami',
-        'PASSWORD': '9c0bc30e2f'
+        'PASSWORD': 
     }
 }
 
